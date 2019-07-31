@@ -51,7 +51,7 @@ def RunLogicTestOnSim(
 
   # Running with --standalone will not work on Xcode Beta 5 locally for me.
   command = [
-      'xcrun', 'simctl', 'spawn', sim_id,
+      'xcrun', 'simctl', 'spawn', '--standalone', sim_id,
       xcode_info_util.GetXctestToolPath(ios_constants.SDK.IPHONESIMULATOR)]
   if args:
     command += args
@@ -61,8 +61,8 @@ def RunLogicTestOnSim(
     tests_to_run_str = ','.join(tests_to_run)
 
   # If the device has been booted, then it will work
-  subprocess.Popen(['time', 'xcrun', 'simctl', 'boot', sim_id],
-          stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
+  #subprocess.Popen(['time', 'xcrun', 'simctl', 'boot', sim_id],
+  #        stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
 
   # Shutting the device down will not work
   #subprocess.Popen(['xcrun', 'simctl', 'shutdown', sim_id],
