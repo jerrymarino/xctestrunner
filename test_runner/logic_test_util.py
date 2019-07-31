@@ -48,8 +48,10 @@ def RunLogicTestOnSim(
     for key in env_vars:
       simctl_env_vars[_SIMCTL_ENV_VAR_PREFIX + key] = env_vars[key]
   simctl_env_vars['NSUnbufferedIO'] = 'YES'
+
+  # Running with --standalone will not work on Xcode Beta 5 locally for me.
   command = [
-      'xcrun', 'simctl', 'spawn', '--standalone', sim_id,
+      'xcrun', 'simctl', 'spawn', sim_id,
       xcode_info_util.GetXctestToolPath(ios_constants.SDK.IPHONESIMULATOR)]
   if args:
     command += args
@@ -58,9 +60,21 @@ def RunLogicTestOnSim(
   else:
     tests_to_run_str = ','.join(tests_to_run)
 
+  # If the device has been booted, then it will work
+  subprocess.Popen(['time', 'xcrun', 'simctl', 'boot', sim_id],
+          stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
+
+  # Shutting the device down will not work
+  #subprocess.Popen(['xcrun', 'simctl', 'shutdown', sim_id],
+  #        stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
+
+  # Debugging help
+  #subprocess.Popen(['xcrun', 'simctl', 'list'],
+  #        stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
+  #print("SIMCTL_ARGS", command + ['-XCTest', tests_to_run_str, test_bundle_path])
   return_code = subprocess.Popen(
       command + ['-XCTest', tests_to_run_str, test_bundle_path],
-      env=simctl_env_vars, stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
+       env=simctl_env_vars, stdout=sys.stdout, stderr=subprocess.STDOUT).wait()
   if return_code != 0:
     return runner_exit_codes.EXITCODE.FAILED
   return runner_exit_codes.EXITCODE.SUCCEEDED
