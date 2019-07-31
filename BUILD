@@ -26,5 +26,5 @@ par_binary(
         ':shared',
         ':simulator',
     ],
-    data = glob(['test_runner/TestProject/**']),
+    data = glob(['test_runner/TestProject/**', ":shared", ":simulator"]),
 )

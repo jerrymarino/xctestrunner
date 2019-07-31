@@ -17,9 +17,9 @@
 import subprocess
 import sys
 
-from xctestrunner.shared import ios_constants
-from xctestrunner.shared import xcode_info_util
-from xctestrunner.test_runner import runner_exit_codes
+from shared import ios_constants
+from shared import xcode_info_util
+from test_runner import runner_exit_codes
 
 _SIMCTL_ENV_VAR_PREFIX = 'SIMCTL_CHILD_'
 
@@ -49,7 +49,7 @@ def RunLogicTestOnSim(
       simctl_env_vars[_SIMCTL_ENV_VAR_PREFIX + key] = env_vars[key]
   simctl_env_vars['NSUnbufferedIO'] = 'YES'
   command = [
-      'xcrun', 'simctl', 'spawn', sim_id,
+      'xcrun', 'simctl', 'spawn', '--standalone', sim_id,
       xcode_info_util.GetXctestToolPath(ios_constants.SDK.IPHONESIMULATOR)]
   if args:
     command += args

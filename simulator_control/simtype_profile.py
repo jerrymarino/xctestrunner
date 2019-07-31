@@ -16,10 +16,10 @@
 
 import os
 
-from xctestrunner.shared import ios_constants
-from xctestrunner.shared import ios_errors
-from xctestrunner.shared import plist_util
-from xctestrunner.shared import xcode_info_util
+from shared import ios_constants
+from shared import ios_errors
+from shared import plist_util
+from shared import xcode_info_util
 
 
 class SimTypeProfile(object):
@@ -53,11 +53,11 @@ class SimTypeProfile(object):
       else:
         platform_path = xcode_info_util.GetSdkPlatformPath(
             ios_constants.SDK.IPHONESIMULATOR)
-      if xcode_info_util.GetXcodeVersionNumber() >= 1100:
-        sim_profiles_dir = os.path.join(
-            platform_path, 'Library/Developer/CoreSimulator/Profiles')
-      else:
-        sim_profiles_dir = os.path.join(
+      #if xcode_info_util.GetXcodeVersionNumber() >= 1100:
+      #  sim_profiles_dir = os.path.join(
+      #      platform_path, 'Library/Developer/CoreSimulator/Profiles')
+      #else:
+      sim_profiles_dir = os.path.join(
             platform_path, 'Developer/Library/CoreSimulator/Profiles')
       profile_plist_path = os.path.join(
           sim_profiles_dir,
